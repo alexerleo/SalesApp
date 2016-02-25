@@ -1,0 +1,48 @@
+﻿@model Sales.Web.Models.AddButtonModel
+@{
+    ViewBag.Title = "AddEmployee";
+}
+@using (Html.BeginForm("AddButton", "Company", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Add New Button.</h4>
+    <hr />
+    <input type="hidden" value="@ViewBag.CompanyId" name="CompanyId" />
+    @Html.ValidationSummary()
+    <div class="form-group">
+        <label class="col-md-2 control-label">Button Text</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Text, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Button Text Color</label>
+        <div class="col-md-10">
+            <select id="FontColor" name="FontColor" class="form-control">
+                <option value="#000000" style="background-color: #000000">BLack</option>
+                <option value="#eeeeee" style="background-color: #eeeeee">Gray</option>
+                <option value="#ffffff" style="background-color: #ffffff">White</option>
+                <option value="#2181ec" style="background-color: #2181ec">Blue</option>
+                <option value="#ff0000" style="background-color: #ff0000">Red</option>
+            </select>
+        </div>
+        </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Button Background</label>
+        <div class="col-md-10">
+            <select id="BgColor" name="BgColor" class="form-control">
+                <option value="#eeeeee" style="background-color: #eeeeee">Gray</option>
+                <option value="#000000" style="background-color: #000000">BLack</option>
+                <option value="#ffffff" style="background-color: #ffffff">White</option>
+                <option value="#2181ec" style="background-color: #2181ec">Blue</option>
+                <option value="#ff0000" style="background-color: #ff0000">Red</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-success active active-without-shadow" value="Add Button" />
+        </div>
+    </div>
+}
+

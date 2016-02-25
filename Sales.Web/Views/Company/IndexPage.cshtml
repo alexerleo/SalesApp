@@ -1,0 +1,83 @@
+﻿@model Sales.DataServices.ServiceModels.CompanyTableDTO
+
+<div class="row down_and_up_padding_container" >
+    <div class="row">
+        <div class="col-md-4">
+                <p class="unique_big_green_text">@Model.CompanyName</p>
+        </div>
+        <div class="col-md-4 col-md-offset-4 ">
+            <span class="pull-right top_content_span">
+                    @Html.ActionLink("Add Employee", "AddEmployee", "Company", new { companyId = ViewBag.CompanyId }, new { @class = "btn btn-success active active-without-shadow", @role = "button" })
+                    @Html.ActionLink("Add Admin", "AddAdmin", "Company", new { companyId = ViewBag.CompanyId }, new { @class = "btn btn-success active active-without-shadow", @role = "button" })
+                    @Html.ActionLink("Buttons", "Buttons", "Company", new { companyId = ViewBag.CompanyId }, new { @class = "btn btn-success active active-without-shadow", @role = "button" })
+                    @Html.ActionLink("Map", "MapOfClicks", "Company", new { companyId = ViewBag.CompanyId }, new { @class = "btn btn-success active active-without-shadow", @role = "button" })
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="dataTable_wrapper up_padding_container">
+                <table class="table table-striped table-bordered table-hover little_margin_table" id="data-table" width="100%">
+                    <thead>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Id</th>
+                    @foreach (var item in Model.buttonListNames)
+                    {
+                        <th>@item</th>
+                    }
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr id="@item.Id">
+                                <td>@item.FirstName</td>
+                                <td>@item.LastName</td>
+                                <td>@item.Email</td>
+                                <td>@item.Password</td>
+                                <td>@item.Id</td>
+                                @foreach (var value in item.buttonList)
+                                {
+                                    <td>@value</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script>
+    $(document).ready(function () {
+        $('#data-table').dataTable({
+
+            bFilter: false,
+            aoColumnDefs: [
+              {
+                  bSortable: false,
+                  aTargets: [1, 2],
+
+              },
+            {
+                'bVisible': false,
+                aTargets: [4],
+            },
+            {
+
+                "targets": 0,
+                "render": function (data, type, full, meta)
+                {
+                    return '<a href = "@(Url.Action("EmployeeAccount", "Company"))?EmployeeId=' + full[4] + '">' + data + '</a>';
+                }
+            },
+            ]
+        })
+        document.getElementById("data-table").className += "my-table-margin";
+    });
+    </script>
+}

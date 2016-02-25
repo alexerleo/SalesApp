@@ -1,0 +1,34 @@
+﻿@model Sales.Web.Models.AddCompanyViewModel
+@{
+    ViewBag.Title = "AddCompany";
+}
+@using (Html.BeginForm("AddCompany", "MainAdmin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Create a new company.</h4>
+    <hr />
+    @Html.ValidationSummary()
+    <div class="form-group">
+        <label class="col-md-2 control-label">Company Name</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Company Email</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Company Mobile Number</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-success active active-without-shadow" value="Add Company" />
+        </div>
+    </div>
+}

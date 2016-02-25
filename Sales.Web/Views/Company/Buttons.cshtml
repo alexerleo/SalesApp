@@ -1,0 +1,153 @@
+﻿@model List<Sales.DataModel.Companies.Button>
+@{
+    ViewBag.Title = "Buttons";
+}
+
+<h2>Buttons</h2>
+
+<div class="my-buttons">
+    @Html.ActionLink("Add Button", "AddButton", "Company", new { companyId = ViewBag.CompanyId }, new { @class = "btn btn-success active active-without-shadow", @role = "button" })<br />
+    <ul id="sortable" class="padding_container">
+        @foreach (var item in Model)
+        {
+            <li id="@item.Id" class="my-list-item">
+                <span class="left-align-remove">
+                    <a href="@Url.Action("DeleteButton", "Company", new { buttonId = item.Id, companyId = ViewBag.CompanyId })" class="close" aria-hidden="true" onclick="return confirmDelete();"><i class="fa fa-times"></i></a>
+                </span>
+                <span class="span-with-inputs" id="">
+                    <span class="background-color-picker">
+                        <input class="my-color-picker-input" value='@item.BgColor' />
+                    </span>
+                    <span class="font-color-picker">
+                        <input class="my-color-picker-input" value='@item.FontColor' />
+                    </span>
+                    <span class="button-text">
+                        <input class="button-text-input" value='@item.Text' />
+                    </span>
+                </span>
+                <span class="span-with-button-example">
+
+                </span>
+            </li>
+        }
+    </ul>
+</div>
+@section scripts
+{
+    <script>
+        function hexc(colorval) {
+            var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+            delete (parts[0]);
+            for (var i = 1; i <= 3; ++i) {
+                parts[i] = parseInt(parts[i]).toString(16);
+                if (parts[i].length == 1) parts[i] = '0' + parts[i];
+            }
+            color = parts.join('');
+            return color;
+        }
+        function add_color_events()
+        {
+            $(".evo-pop").each(function () {
+                handle_color_picker(this);
+            });
+        }
+        function handle_color_picker(colorPicker)
+        {
+            var column = "0";
+            if ($(colorPicker).parent().parent().hasClass('background-color-picker')) {
+                column = "1";
+            }
+            else {
+                column = "2";
+            }
+            $(colorPicker).on("click", function () {
+                setTimeout(function () {
+                    var clorelement = $(colorPicker).siblings(".evo-colorind")[0];
+                    var btnId = $(colorPicker).parent().parent().parent().parent().attr('id');
+                    var color = $(clorelement).css('backgroundColor');
+                    var currentColor = String(hexc(color));
+                    var parametrs = 'id=' + btnId + '&value=' + currentColor + '&columnId=' + column;
+                    $.ajax({
+                        type: "Get",
+                        traditional: true,
+                        url: '@Url.Action("UpdateButton", "Company")?' + parametrs,
+                        success: function (data) {
+
+                        }
+                    });
+                }, 100);
+            });
+        }
+        function color_pickers_init()
+        {
+            $(".my-color-picker-input").each(function (index) {
+                $(this).colorpicker({
+                    transparentColor: true,
+                });
+
+            });
+
+            $(".evo-colorind").each(function () {
+                $(this).on("click", function () {
+                    add_color_events();
+                });
+            });
+            $(".button-text-input").each(function () {
+                var btnId = $(this).parent().parent().parent().attr('id');
+                var element = this;
+
+                $(this).on("blur", function () {
+                    var value = $(element).val();
+                    var parametrs = 'id=' + btnId + '&value=' + value + '&columnId=' + "3";
+                    $.ajax({
+                        type: "Get",
+                        traditional: true,
+                        url: '@Url.Action("UpdateButton", "Company")?' + parametrs,
+                        success: function (data) {
+
+                        }
+                    });
+                });
+            });
+        }
+        $(document).ready(function () {
+            color_pickers_init();
+            $("#sortable").sortable({
+                start: function (e, ui) {
+                    $(this).attr('data-previndex', ui.item.index());
+                },
+                update: function (e, ui) {
+                    var newIndex = ui.item.index();
+                    var oldIndex = $(this).attr('data-previndex');
+                    var direction;
+                    var id = ui.item.attr("id");
+                    if (newIndex < oldIndex)
+                    {
+                        direction = "back";
+                    }
+                    else
+                    {
+                        direction = "forvard";
+                    }
+                    $(this).removeAttr('data-previndex');
+                    $.ajax({
+                        type: "Get",
+                        traditional: true,
+                        url: '@Url.Action("UpdateOrder", "Company")?' + "id=" + id + "&fromPosition=" + oldIndex + "&toPosition=" + newIndex + "&direction=" + direction,
+                        success: function (data) {
+
+                        }
+                    });
+                }
+            });
+            $('.evo-cp-wrap').attr('style', 'width: 50px !important;');
+        })
+        function confirmDelete() {
+            if (confirm("Are you sure you want to delete?")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+</script>
+}

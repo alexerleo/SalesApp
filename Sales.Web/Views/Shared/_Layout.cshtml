@@ -1,0 +1,82 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Sales</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/bootstrap.css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/morris.css")
+    @Styles.Render("~/Content/bootflat/bootflat.css")
+    @Styles.Render("~/Content/bootflat/aero.css")
+    @Styles.Render("~/Content/dataTables.bootstrap.css")
+    @Styles.Render("~/Content/kalypto.css")
+    @Styles.Render("~/Content/bootstrap/bootstrap-datetimepicker-build.css")
+    @Styles.Render("~/Content/Site.css")
+    @Styles.Render("~/Content/evol.colorpicker.min.css")
+    @Styles.Render("~/Content/jquery-ui.css")
+    @Styles.Render("~/Content/font-awesome.min.css")
+    @*Styles.Render("~/Content/less")*@
+    @Scripts.Render("~/bundles/jquery")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @if(User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole(Sales.DataModel.RoleNames.MainAdmin))
+                    {
+                        @Html.ActionLink("Sales", "Companies", "MainAdmin", null, new { @class = "navbar-brand " })
+                    }
+                    else
+                    {
+                        Html.RenderAction("CompanyAdminLinksPartial", "Company"); 
+
+                    }
+                }
+
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li></li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        @RenderBody()
+    </div>
+    <div class="row">
+        <div class="my_footer">
+            <p>&copy; @DateTime.Now.Year - Sales</p>
+        </div>
+    </div>
+    @Scripts.Render("~/Scripts/jquery-2.2.0.min.js")
+    @Scripts.Render("~/Scripts/DataTables/jquery.dataTables.min.js")
+    @Scripts.Render("~/Scripts/DataTables/dataTables.bootstrap.min.js")
+    @Scripts.Render("~/Scripts/DataTables/dataTables.buttons.min.js")
+    @Scripts.Render("~/Scripts/jquery.jeditable.js")
+    @Scripts.Render("~/Scripts/jquery-ui.min.js")
+    @Scripts.Render("~/Scripts/jquery.dataTables.editable.js")
+    @Scripts.Render("~/Scripts/jQuery.dataTables.rowReordering.js")
+    @Scripts.Render("~/Scripts/icheck.min.js")
+    @Scripts.Render("~/Scripts/kalypto.min.js")
+    @Scripts.Render("~/Scripts/highcharts/4.2.0/highcharts.js")
+    @Scripts.Render("~/Scripts/highcharts/4.2.0/highcharts-3d.js")
+    @Scripts.Render("~/Scripts/highcharts/4.2.0/modules/exporting.js")
+    @Scripts.Render("~/Scripts/moment.js")
+    @Scripts.Render("~/Scripts/bootstrap-datetimepicker.min.js")
+    @Scripts.Render("~/Scripts/evol.colorpicker.min.js")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

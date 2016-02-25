@@ -1,0 +1,49 @@
+﻿@model Sales.Web.Models.AddEmployeeModel
+@{
+    ViewBag.Title = "AddEmployee";
+}
+
+@using (Html.BeginForm("AddEmployee", "Company", FormMethod.Post, new { @class = "form-horizontal up_padding_container", role = "form" }))
+{
+    <div class="down_padding_container">
+        <p class="unique_big_green_text left_margin_down_margin_to_text ">AddEmployee:</p>
+    </div>
+    <input type="hidden" value="@ViewBag.CompanyId" name="CompanyId" />
+    @Html.ValidationSummary()
+    <div class="form-group">
+        <label class="col-md-2 control-label">Employee Name</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Employee Last Name</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Employee Email</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Employee password</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Password, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Confirm Password</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-success active active-without-shadow" value="Save" />
+        </div>
+    </div>
+}
+

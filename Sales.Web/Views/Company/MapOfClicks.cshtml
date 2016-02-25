@@ -1,0 +1,143 @@
+﻿@model Sales.Web.Models.MapViewModel 
+@{
+    ViewBag.Title = "MapOfClicks";
+}
+<script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
+
+<div id="clicksList">
+    @{
+        var filtred = Model.Points
+            .GroupBy(x => x.EmployeeName, x => new
+            {
+                ButtonText = x.ButtonText,
+                Details = new
+                {
+                    Time = x.Time,
+                    Longitude = x.Longitude,
+                    Latitude = x.Latitude,
+                    LastName = x.EmployeeLastName
+                }
+            })                
+            .ToList()
+            .Select(x => new
+            {
+                Name = x.Key,
+                Buttons = x.GroupBy(btn => btn.ButtonText, btn => btn.Details)
+                            .ToList()
+                            .Select(btn => new 
+                            {
+                                Text = btn.Key,
+                                Details = btn.OrderByDescending(d => d.Time).ToList()
+                            })
+            });
+        foreach(var Employee in filtred)
+        {
+            <div class="employee">
+                <div class="employee-name">@Employee.Name</div>
+                <div class="employee-buttons-list">
+                    @{
+                        foreach(var Button in Employee.Buttons)
+                        {
+                            <div class="employee-button">
+                                <div class="employee-button-name">@Button.Text</div>
+                                <div class="employee-button-clicks">
+                                    @{
+                                        foreach (var Click in Button.Details)
+                                        {
+                                            <div class="employee-button-click" onclick="selectMarker(@Click.Latitude, @Click.Longitude)">
+                                                @Click.Time
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        }    
+    }
+</div>
+<!-- This is the div that will contain the Google Map -->
+<div id="map_canvas" style="height: 500px;"></div>
+
+@section scripts {
+    <section class="scripts">
+
+        <script type="text/javascript">
+
+    //This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
+    $(document).ready(function () {
+        Initialize();
+    });
+
+    var Center, map;
+
+    function selectMarker(lat, long) {
+        Center = new google.maps.LatLng(lat, long);
+        map.setCenter(Center);
+    }
+
+
+    function Initialize() {
+
+        // Google has tweaked their interface somewhat - this tells the api to use that new UI
+        google.maps.visualRefresh = true;
+        var lastClick = JSON.parse(decodeURI('@Json.Encode(Model.Points.OrderByDescending(x=>x.Time).FirstOrDefault())').replace(/&quot;/g, '\"'));
+	if(lastClick)
+        	Center = new google.maps.LatLng(lastClick.Latitude, lastClick.Longitude);
+
+        // These are options that set initial zoom level, where the map is centered globally to start, and the type of map to show
+        var mapOptions = {
+            zoom: 15,
+            center: Center,
+            mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
+        };
+
+        // This makes the div with id "map_canvas" a google map
+        map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+        //markerBounds = new google.maps.LatLngBounds();
+
+        // a sample list of JSON encoded data of places to visit in Liverpool, UK
+        // you can either make up a JSON list server side, or call it from a controller using JSONResult
+        var points = JSON.parse('@Json.Encode(Model.Points)'.replace(/&quot;/g,'"'));
+        @*$.ajax({
+            url: '@(Url.Action("EmployeeClicksMap", "Company"))?companyId=' + '@Model.CompanyId' +'&employeeId=' + '@Model.EmployeeId' + '&from=' + '@Model.From' + '&to=' + '@Model.To' + '&btnId=' + '@Model.BtnId',
+            type: "GET",
+            success: function (response) {*@
+                var data = points; /*response;*/
+                $.each(data, function (i, item) {
+                    var marker = new google.maps.Marker({
+                        'position': new google.maps.LatLng(item.Latitude, item.Longitude),
+                        'map': map,
+                        'title': item.EmployeeName + '(' + item.Time +  ')'
+                    });
+
+                    // Make the marker-pin blue!
+                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+
+                    // put in some information about each json object - in this case, the opening hours.
+                    var infowindow = new google.maps.InfoWindow({
+                        content: "<div class='infoDiv'><h2>" + item.EmployeeName + "(" + item.ButtonText +  ")" + "</h2>" + "<div><h4>Clicked at: " + item.Time + "</h4></div></div>"
+                    });
+
+                    // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
+                    google.maps.event.addListener(marker, 'click', function () {
+                        infowindow.open(map, marker);
+                    });
+                    google.maps.event.addListener(map, "zoom_changed", function () {
+                        map.setCenter(Center);
+                    });
+                })
+        //    }
+        //});
+
+        // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
+
+    }
+
+
+        </script>
+    </section>
+}

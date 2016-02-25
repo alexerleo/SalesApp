@@ -1,0 +1,235 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+.padding_container {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
+.down_and_up_padding_container {
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
+.down_padding_container {
+    padding-bottom: 20px;
+}
+.btn.active-without-shadow {
+      box-shadow: none;
+}
+.btn-success, .btn-success.active, .btn-success.disabled, .btn-success:active ,  .btn-success[disabled] {
+    background-color: #8cc152;
+    border-color: #8cc152;
+}
+.btn-success:hover, .btn-success.active:hover {
+    background-color: #81b24c;
+    border-color: #81b24c; 
+}
+.unique_big_green_text {
+    color: #8cc152;
+    font-size: 150%;
+}
+.up_padding_container {
+    padding-top: 20px;
+}
+
+div.dataTables_scrollBody table {
+    margin-bottom: 6; 
+}
+
+#data-table{
+    margin-bottom: 20px!important;
+}
+.top {
+    vertical-align: middle;
+ }
+label {
+    margin-bottom: 0px;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    vertical-align: inherit;
+}
+top_content_span{
+
+  vertical-align: central;
+}
+p {
+    margin: 0;
+}
+middle_align_for_cell {
+    text-align: inherit; /* center checkbox horizontally */
+    vertical-align: central;
+}
+a.toggle{
+    display:inline-block;
+}
+.cell_with_centered_text{
+    vertical-align: inherit;
+    text-align: center;
+}
+.my_footer {
+  /*position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;*/
+  padding: 1rem;
+  text-align: center;   
+}
+#myInputTextField {
+    height: 34px;
+}
+.left_margin_down_margin_to_text {
+    padding-left: 22px;
+    padding-bottom: 10px;
+}
+.my-table-margin {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.dataTables_length {
+    margin-bottom:20px;
+}
+.container {
+    padding-left: 0;
+    padding-right: 0;
+}
+.none_right_padding {
+    padding-right: 0;
+}
+.my-buttons ul {
+    list-style: none;
+}
+.right-span {
+    position: relative;
+}
+.my-color-picker-input {
+    display:none;
+}
+.my-list-item {
+    background-color: #A0A0A0;
+    width: 700px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+.span-with-inputs {
+    float:left;
+    margin-left: 0px;
+    margin-top: 15px;
+}
+.right-align-span {
+}
+.left-align-remove {
+    position:absolute;
+    float:left;
+    margin: 12px;
+}
+.background-color-picker {
+    position:absolute;
+    margin-left: 75px;
+}
+.font-color-picker {
+    margin-left: 175px;
+    position:absolute;
+}
+.button-text-input{
+    margin-left: 280px;
+    position:absolute;
+}
+.span-with-button-example{
+    border-color: black;
+    width: 150px;
+    height: 50px;
+}
+
+.bootstrap-datetimepicker-widget {
+    color: #f7f7f7;
+}
+.datefilter-picker {
+    width: 75%;
+    float: right;
+}
+.datefilter-label {
+    line-height: 34px;
+}
+.vmargin-15 {
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+@media (max-width: 991px) {
+    .datefilter-filters {
+        float: left;
+        width: 80%;
+        max-width: 400px;
+    }
+}
+#map_canvas {
+    float:right;
+    width: 80%;
+    display:inline-block;
+}
+/*---map clicks list---*/
+#clicksList {
+    display: inline-block;
+    width: 18%;
+    float: left;
+    height: 500px;
+    overflow-y: auto;
+}
+.employee-buttons-list,
+.employee-button-clicks {
+    margin-left: 30px;
+}
+.employee-button-click {
+    cursor: pointer;
+}
+.employee-button-click:hover {
+    background-color: #5e90ec !important;
+}
+.employee-button-click:nth-child(2n) {
+    background-color: #e6e9ed;
+}
+.employee-name {
+    font-weight: bold;
+}
+.employee-button-name {
+    font-style: italic;
+}

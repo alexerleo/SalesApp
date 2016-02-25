@@ -1,0 +1,234 @@
+﻿@model Sales.Web.Models.EmployeeViewModel
+<div class="row">
+        <div class="col-md-6">            
+            <table class="table little_margin_table" id="data-table" width="100%">
+                <thead>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                </thead>
+                <tbody>
+                    <tr id="@Model.Id" >
+                        <td>@Model.FirstName</td>
+                        <td>@Model.LastName</td>
+                        <td>@Model.Email</td>
+                        <td>@Model.Password</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div>            
+                    <button id="lastWeek" class="btn btn-default" onclick='getFilter(-7)'>Last week</button>
+                    <button id="thisWeek" class="btn btn-default" onclick='getFilter(7)'>This week</button>
+                    <button id="thisMounth" class="btn btn-default" onclick='getFilter(30)'>This month</button>                    
+                </div>
+                <div class="vmargin-15">
+                    <div class="datefilter-filters">
+                        <div class='col-md-5 form-group'>
+                            <span class="datefilter-label">From:</span>
+                            <div class="datefilter-picker">
+                                <div class='input-group date' id='datetimepickerfrom'>
+                                    <input type='text' class="form-control" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='col-md-5 form-group'>
+                            <span class="datefilter-label">To:</span>
+                            <div class="datefilter-picker">
+                                <div class='input-group date' id='datetimepickerto'>
+                                    <input type='text' class="form-control" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="toFrom" class="btn btn-default" onclick='getFilter(null)'>Apply</button>
+                </div>
+                <table class="table little_margin_table" id="table-clicks" width="100%">
+                    <thead>
+                        @foreach(var item in Model.BtnList)
+                        {
+                            <th>@item.Text</th>
+                        }
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.BtnList)
+                        {
+                            <td>
+                                <a id="@item.Id" onclick="openMap('@item.Id')">
+                                    @item.Clicks.Count
+                                </a>
+                            </td>
+                        }
+                    </tbody>
+                </table>
+            </div>
+                        
+            @*<div class="row">
+                <div class='col-md-6'>
+                    <p>Clicks:</p>
+                </div>
+            </div>*@
+            <button class="btn btn-default" onclick="openMap(null)">See all map</button>
+        </div>
+    <div class="col-lg-6">
+        <div id="container" style="height: 400px"></div>
+    </div>
+</div>
+
+<script>
+    var current_from_date = "lol1";
+    var current_to_date = "koko";
+    function update_dates(from, to)
+    {
+        @*@foreach (var item in @Model.BtnList)
+        {
+            var element = $('#' + @item.Id.ToString());
+            element.setAttribute('href', '#url');
+            @Url.Action("MapOfClicks", "Company") + 'companyId=' + '@Model.CompanyId' + 'empoyeeId=' + '@Model.Id' + 'from=' + current_from_date + 'to=' + current_to_date + 'btnid=' + '@item.Id' id="@item.Id"
+        }*@
+    }
+    var openMap = function (btnId) {
+        var url = '@(Url.Action("MapOfClicks", "Company"))?companyId='+'@Model.CompanyId'+'&employeeId='+'@Model.Id'+'&btnId='+btnId+'&from='+'@ViewBag.From'+'&to=' + '@ViewBag.To';
+        window.location = url;
+    }
+    var getFilter = function (filter) {
+        var from, to;
+        if (filter) {
+            var now = new Date();
+            if (filter == 30) {
+                from = new Date(now.getFullYear(), now.getMonth(), 1);
+                to = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+            }
+            if (Math.abs(filter) % 7 == 0) {
+                now = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                var dayOfWeek = (now.getDay() + 6) % 7;
+                from = now - ((filter == -7 ? 7 : 0) + dayOfWeek) * 24 * 60 * 60 * 1000;
+                to = from + 7 * 24 * 60 * 60 * 1000;
+            }
+        }
+        else {
+            from = $('#datetimepickerfrom input')[0].value;
+            to = $('#datetimepickerto input')[0].value;
+        }
+        var url = '@(Url.Action("EmployeeAccount", "Company"))?EmployeeId=' + '@Model.Id' 
+            + '&from=' + new Date(from).toDateString() + '&to=' + new Date(to).toDateString();
+        window.location = url;
+    }
+    $(document).ready(function () {
+        var url = window.location.href;
+        /*var from, to;
+        if(url.match(/(&from=)||($to=)/)) {
+            from = url.substring(url.indexOf('&from=') + 6, url.indexOf('&to='));
+            to = url.substring(url.indexOf('&to=') + 4, url.length);
+        }*/
+        $.ajax({
+            url: '@(Url.Action("EmployeeGraphic", "Company"))?EmployeeId=' + '@Model.Id'
+                + '&from=' + '@ViewBag.From' + '&to=' + '@ViewBag.To',
+            type: "GET",
+            success: function (response) {
+                $('#container').highcharts({
+                    chart: {
+                        type: 'column',
+                        margin: 75,
+                        options3d: {
+                            enabled: true,
+                            alpha: 10,
+                            beta: 25,
+                            depth: 70
+                        }
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    title: {
+                        text: '@Model.FirstName' + ' clicks'
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    plotOptions: {
+                        column: {
+                            depth: 25
+                        }
+                    },
+                    xAxis: {
+                        categories: response.ButtonNames
+                    },
+                    yAxis: {
+                        title: {
+                            text: null
+                        },
+                        allowDecimals: false,
+                        min: 0
+                    },
+                    series: [{
+                        name: 'Sales',
+                        data: response.buttonClicksCount
+                    }]
+                });
+            }
+        });
+        $('#table-clicks').dataTable({
+            scrollX: true,
+            bFilter: false,
+            bInfo: false,
+            bSort: false,
+            bLengthChange: false,
+            bPaginate: false,
+            rowReorder: true
+        });
+        $('#data-table').dataTable({
+            bFilter: false,
+            bInfo: false,
+            bSort: false,
+            bLengthChange: false,
+            bPaginate: false,
+            rowReorder: true
+        }).makeEditable({
+            sUpdateURL: '@(Url.Action("UpdateEmployee", "Company"))',
+            "aoColumns": [
+                            {
+                                indicator: 'Saving...',
+                                tooltip: 'Click to edit',
+                                loadtext: 'loading...',
+                                onblur: 'submit',
+                                sUpdateURL: '@(Url.Action("UpdateEmployee", "Company"))'
+                            },
+                                {
+                                    indicator: 'Saving...',
+                                    tooltip: 'Click to edit',
+                                    loadtext: 'loading...',
+                                    onblur: 'submit',
+                                    sUpdateURL: '@(Url.Action("UpdateEmployee", "Company"))'
+                                },
+                            {
+                                indicator: 'Saving...',
+                                tooltip: 'Click to edit',
+                                loadtext: 'loading...',
+                                onblur: 'submit',
+                                sUpdateURL: '@(Url.Action("UpdateEmployee", "Company"))'
+                            },
+                            {
+                                indicator: 'Saving...',
+                                tooltip: 'Click to edit',
+                                loadtext: 'loading...',
+                                onblur: 'submit',
+                                sUpdateURL: '@(Url.Action("UpdateEmployee", "Company"))'
+                            }
+
+            ]
+        })
+        $(function () {
+            $('#datetimepickerfrom').datetimepicker();
+            $('#datetimepickerto').datetimepicker();
+        });
+    });
+
+</script>
