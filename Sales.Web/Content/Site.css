@@ -67,6 +67,8 @@ input[type="checkbox"].input-validation-error {
 .unique_big_green_text {
     color: #8cc152;
     font-size: 150%;
+    margin-top: 15px;
+    margin-bottom: 20px;
 }
 .up_padding_container {
     padding-top: 20px;
@@ -145,7 +147,7 @@ a.toggle{
     display:none;
 }
 .my-list-item {
-    background-color: #A0A0A0;
+    /*background-color: #A0A0A0;*/
     width: 700px;
     height: 50px;
     margin-bottom: 10px;
@@ -163,21 +165,46 @@ a.toggle{
     margin: 12px;
 }
 .background-color-picker {
+    cursor: pointer;
     position:absolute;
-    margin-left: 75px;
+    margin-left: 291px;
 }
 .font-color-picker {
-    margin-left: 175px;
+    margin-left: 258px;
     position:absolute;
+    cursor: pointer;
+}
+.font-colorpicker-img {
+    top: 10px;
+    margin-left: 288px;
+    position:absolute;
+}
+.background-colorpicker-img {
+    top: 9px;
+    margin-left: 318px;
+    position:absolute;
+}
+.text-editor-btn {
+    top: 11px;
+    margin-left: 257px;
+    position:absolute;
+    z-index: 10;
+    cursor: pointer;
 }
 .button-text-input{
-    margin-left: 280px;
+    margin-left: 45px;
     position:absolute;
+    background-color: inherit;
+    border: 0;
+    line-height: normal;
+    outline: none;
 }
 .span-with-button-example{
-    border-color: black;
-    width: 150px;
+    border: 0;
+    width: 245px;
     height: 50px;
+    position: absolute;
+    margin-left: 380px;
 }
 
 .bootstrap-datetimepicker-widget {
@@ -232,4 +259,58 @@ a.toggle{
 }
 .employee-button-name {
     font-style: italic;
+}
+
+
+.green-header {
+    color: #7fb63a;
+}
+
+.buttons-container {
+    background-color: #f0f0f0;
+}
+
+.btn-new-button {
+    margin-left: 10px;
+    margin-bottom: 6px;
+}
+
+.button-edit-block {
+    background-color: #A0A0A0;
+    position: absolute;
+    width: 353px;
+    height: 50px;
+}
+
+.evo-pointer {
+    margin-top: 22px;
+    height: 2px !important;
+    border: 0 !important;
+}
+
+.delete-link {
+    display: block;
+    width: 23px;
+    height: 23px;
+    background: url(../content/images/delete-btn.png) no-repeat;
+    text-indent: -9999px;
+}
+
+.breadcrumb{
+    margin: 20px 0px 0px 0px;
+}
+
+#logo {
+    width:232px; height:52px; background:url(../content/images/logo.png) center left no-repeat;
+    display: inline-block;
+    float: left;
+
+}
+
+.remember-me {
+    text-align: left;
+}
+
+#loginForm {
+    margin-top: 60px;
 }

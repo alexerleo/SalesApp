@@ -5,6 +5,7 @@ using Sales.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -55,13 +56,13 @@ namespace Sales.Web.Controllers
         public ActionResult DeleteCompany(string id)
         {
             _service.DeleteCompany(new Guid(id));
-            return View();
+            return new HttpStatusCodeResult(HttpStatusCode.OK); 
         }
         [HttpPost]
         public ActionResult RestoreCompany(string id)
         {
             _service.RestoreCompany(new Guid(id));
-            return View();
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
         public ActionResult GetCompaniesTable(int draw, int start, int length)
         {

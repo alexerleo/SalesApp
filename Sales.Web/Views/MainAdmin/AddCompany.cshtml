@@ -2,11 +2,14 @@
 @{
     ViewBag.Title = "AddCompany";
 }
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Companies", "Companies", "MainAdmin")</li>
+    <li class="active">Add a new company</li>
+</ol>
 @using (Html.BeginForm("AddCompany", "MainAdmin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Create a new company.</h4>
-    <hr />
+    <h4 class="green-header">Create a new company</h4>
     @Html.ValidationSummary()
     <div class="form-group">
         <label class="col-md-2 control-label">Company Name</label>

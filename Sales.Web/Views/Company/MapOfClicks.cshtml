@@ -3,7 +3,11 @@
     ViewBag.Title = "MapOfClicks";
 }
 <script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
-
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Company Home Page", "IndexPage", "Company", new {@id = ViewBag.CompanyId}, new {})</li>
+    <li class="active">Map</li>
+</ol>
+<br/>
 <div id="clicksList">
     @{
         var filtred = Model.Points

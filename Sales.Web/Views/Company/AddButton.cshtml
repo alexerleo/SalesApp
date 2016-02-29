@@ -2,11 +2,15 @@
 @{
     ViewBag.Title = "AddEmployee";
 }
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Company Home Page", "IndexPage", "Company", new {@id = ViewBag.CompanyId}, new {})</li>
+    <li>@Html.ActionLink("Buttons", "Buttons", "Company", new { @companyId = ViewBag.CompanyId }, new { })</li>
+    <li class="active">Add New Button</li>
+</ol>
 @using (Html.BeginForm("AddButton", "Company", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Add New Button.</h4>
-    <hr />
+    <h4 class="green-header">Add New Button</h4>
     <input type="hidden" value="@ViewBag.CompanyId" name="CompanyId" />
     @Html.ValidationSummary()
     <div class="form-group">

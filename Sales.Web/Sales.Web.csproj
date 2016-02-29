@@ -358,6 +358,10 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\Images\background-colorpicker.png" />
+    <Content Include="Content\Images\delete-btn.png" />
+    <Content Include="Content\Images\font-colorpicker.png" />
+    <Content Include="Content\Images\text-btn.png" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\kalypto.css" />
     <Content Include="Content\morris.css" />
@@ -662,6 +666,7 @@
     <Content Include="Views\Company\MapOfClicks.cshtml" />
     <Content Include="Views\Shared\_NavBarPartial.cshtml" />
     <Content Include="Views\Company\CompanyAdminLinksPartial.cshtml" />
+    <Content Include="Views\Company\Buttons2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Api\" />

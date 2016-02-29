@@ -2,11 +2,14 @@
 @{
     ViewBag.Title = "AddEmployee";
 }
-
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Company Home Page", "IndexPage", "Company", new { @id = ViewBag.CompanyId }, new{})</li>
+    <li class="active">Add Employee</li>
+</ol>
 @using (Html.BeginForm("AddEmployee", "Company", FormMethod.Post, new { @class = "form-horizontal up_padding_container", role = "form" }))
 {
     <div class="down_padding_container">
-        <p class="unique_big_green_text left_margin_down_margin_to_text ">AddEmployee:</p>
+        <p class="unique_big_green_text left_margin_down_margin_to_text ">Add Employee</p>
     </div>
     <input type="hidden" value="@ViewBag.CompanyId" name="CompanyId" />
     @Html.ValidationSummary()

@@ -2,35 +2,52 @@
 @{
     ViewBag.Title = "Buttons";
 }
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Company Home Page", "IndexPage", "Company", new { @id = ViewBag.CompanyId }, new { })</li>
+    <li class="active">Buttons</li>
+</ol>
+<h3 class="green-header">Buttons</h3>
 
-<h2>Buttons</h2>
-
-<div class="my-buttons">
-    @Html.ActionLink("Add Button", "AddButton", "Company", new { companyId = ViewBag.CompanyId }, new { @class = "btn btn-success active active-without-shadow", @role = "button" })<br />
+<div class="my-buttons buttons-container">
     <ul id="sortable" class="padding_container">
         @foreach (var item in Model)
         {
             <li id="@item.Id" class="my-list-item">
-                <span class="left-align-remove">
-                    <a href="@Url.Action("DeleteButton", "Company", new { buttonId = item.Id, companyId = ViewBag.CompanyId })" class="close" aria-hidden="true" onclick="return confirmDelete();"><i class="fa fa-times"></i></a>
-                </span>
-                <span class="span-with-inputs" id="">
-                    <span class="background-color-picker">
-                        <input class="my-color-picker-input" value='@item.BgColor' />
+                <span class="button-edit-block">
+                    <span class="left-align-remove">
+                        <a class="delete-link" href="@Url.Action("DeleteButton", "Company", new {buttonId = item.Id, companyId = ViewBag.CompanyId})" class="close" aria-hidden="true" onclick="return confirmDelete();"></a>
                     </span>
-                    <span class="font-color-picker">
-                        <input class="my-color-picker-input" value='@item.FontColor' />
-                    </span>
-                    <span class="button-text">
-                        <input class="button-text-input" value='@item.Text' />
-                    </span>
-                </span>
-                <span class="span-with-button-example">
+                    <span class="span-with-inputs" id="">
+                        <span data-id="@item.Id" class="text-editor-btn">
+                            <img src="@Url.Content("~/Content/Images/text-btn.png")" />
+                        </span>
 
+                        <span class="font-colorpicker-img">
+                            <img src="@Url.Content("~/Content/Images/font-colorpicker.png")" />
+                        </span>
+                        <span class="background-colorpicker-img">
+                            <img src="@Url.Content("~/Content/Images/background-colorpicker.png")" />
+                        </span>
+                        <span class="picker background-color-picker">
+                            <input class="my-color-picker-input" value='@item.BgColor' />
+                        </span>
+                        <span class="picker font-color-picker">
+                            <input class="my-color-picker-input" value='@item.FontColor' />
+                        </span>
+                        <span class="button-text">
+                            <input data-id="@item.Id" class="button-text-input" value='@item.Text' />
+                        </span>
+                    </span>
                 </span>
+
+                <button data-id="@item.Id" class="span-with-button-example" style="background-color: @item.BgColor; color: @item.FontColor">
+                    @item.Text
+                </button>
             </li>
         }
     </ul>
+    @Html.ActionLink("Add New Button", "AddButton", "Company", new { companyId = ViewBag.CompanyId }, new { @class = "btn btn-success active active-without-shadow  btn-new-button", @role = "button" })<br />
+
 </div>
 @section scripts
 {
@@ -63,7 +80,7 @@
             $(colorPicker).on("click", function () {
                 setTimeout(function () {
                     var clorelement = $(colorPicker).siblings(".evo-colorind")[0];
-                    var btnId = $(colorPicker).parent().parent().parent().parent().attr('id');
+                    var btnId = $(colorPicker).parent().parent().parent().parent().parent().attr('id');
                     var color = $(clorelement).css('backgroundColor');
                     var currentColor = String(hexc(color));
                     var parametrs = 'id=' + btnId + '&value=' + currentColor + '&columnId=' + column;
@@ -72,7 +89,13 @@
                         traditional: true,
                         url: '@Url.Action("UpdateButton", "Company")?' + parametrs,
                         success: function (data) {
-
+                            var cssObj;
+                            if (column == 1) {
+                                ccsObj = { 'background-color': color };
+                            } else {
+                                ccsObj = { 'color': color };
+                            }
+                            $('.span-with-button-example[data-id=' + btnId + ']').css(ccsObj);
                         }
                     });
                 }, 100);
@@ -93,7 +116,7 @@
                 });
             });
             $(".button-text-input").each(function () {
-                var btnId = $(this).parent().parent().parent().attr('id');
+                var btnId = $(this).parent().parent().parent().parent().attr('id');
                 var element = this;
 
                 $(this).on("blur", function () {
@@ -104,7 +127,7 @@
                         traditional: true,
                         url: '@Url.Action("UpdateButton", "Company")?' + parametrs,
                         success: function (data) {
-
+                            $('.span-with-button-example[data-id='+element.dataset.id+']').html(value);
                         }
                     });
                 });
@@ -112,6 +135,16 @@
         }
         $(document).ready(function () {
             color_pickers_init();
+            $('.text-editor-btn').on('click', function () {
+                $('.button-text-input[data-id=' + this.dataset.id + ']').focus().select();
+            });
+            $('.picker').on('mouseup', function (event) {
+                _this = this; 
+                setTimeout(function() {
+                    $(".evo-pointer", _this).trigger('click');
+                }
+                ,100);
+            });
             $("#sortable").sortable({
                 start: function (e, ui) {
                     $(this).attr('data-previndex', ui.item.index());
