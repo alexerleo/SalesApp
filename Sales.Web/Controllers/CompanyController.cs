@@ -132,9 +132,7 @@ namespace Sales.Web.Controllers
         }
         public ActionResult EmployeeGraphic(Guid EmployeeId, DateTime? from = null, DateTime? to = null)
         {            
-            var data = !(from.HasValue && to.HasValue)
-                       ? _companyService.EmpGraph(EmployeeId)
-                       : _companyService.EmpGraph(EmployeeId, from.Value, to ?? DateTime.Now);
+            var data = _companyService.EmpGraph(EmployeeId, from, to);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
         public ActionResult EmployeeAccount(Guid EmployeeId, DateTime? From = null, DateTime? To = null)
@@ -147,9 +145,7 @@ namespace Sales.Web.Controllers
                 LastName = employee.LastName, 
                 Password = employee.Password, 
                 Id = employee.Id.ToString(), 
-                BtnList = !(From.HasValue && To.HasValue)
-                          ? _companyService.GetAllButtons(employee.CompanyId, EmployeeId)
-                          : _companyService.FilterButtonClicks(employee.CompanyId, EmployeeId, From.Value, To ?? DateTime.Now)
+                BtnList = _companyService.FilterButtonClicks(employee.CompanyId, EmployeeId, From, To)
             };
             ViewBag.From = From;
             ViewBag.To = To;

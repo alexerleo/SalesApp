@@ -118,7 +118,7 @@
             to = $('#datetimepickerto input')[0].value;
         }
         var url = '@(Url.Action("EmployeeAccount", "Company"))?EmployeeId=' + '@Model.Id' 
-            + '&from=' + new Date(from).toDateString() + '&to=' + new Date(to).toDateString();
+            + '&from=' + (!!from ? new Date(from).toDateString() : '') + '&to=' + (!!to ? new Date(to).toDateString() : '');
         window.location = url;
     }
     $(document).ready(function () {

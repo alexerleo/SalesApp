@@ -67,7 +67,7 @@ namespace Sales.DataServices.ServiceClases
                 })
                 .ToList();
         }
-        public List<Button> FilterButtonClicks(Guid companyId, Guid employeeId, DateTime from, DateTime to)
+        public List<Button> FilterButtonClicks(Guid companyId, Guid employeeId, DateTime? from, DateTime? to)
         {
             return _db.Buttons
                 .Where(x => x.CompanyId == companyId)
@@ -84,8 +84,8 @@ namespace Sales.DataServices.ServiceClases
                     Text = x.Text,
                     Clicks = _db.Clicks.Where(click => click.EmployeeId == employeeId 
                         && click.ButtonId == x.Id 
-                        && click.Date < to 
-                        && click.Date >= from)
+                        && click.Date < (to ?? DateTime.Now)
+                        && click.Date >= (from ?? DateTime.MinValue))
                         .ToList()
                 })
                 .ToList();           
@@ -96,7 +96,7 @@ namespace Sales.DataServices.ServiceClases
             var employeesList = _db.Employees.Where(e => e.CompanyId == companyId);
             var clicksMonth = (from u in _db.Clicks
                              where u.Employee.CompanyId == companyId
-                             where u.Date > DbFunctions.AddDays(DateTime.Now, -30)
+                             //where u.Date > DbFunctions.AddDays(DateTime.Now, -30)
                              group u by u.ButtonId).ToList();
             var companyButtons = _db.Buttons.Where( b => b.CompanyId == companyId);
             foreach(var item in companyButtons)
@@ -218,7 +218,7 @@ namespace Sales.DataServices.ServiceClases
             List<BtnStatisticListItem> resultList = new List<BtnStatisticListItem>();
             var empDataMonth = (from u in _db.Clicks
                                 where u.EmployeeId == empoyeeId
-                                    && u.Date > (From ?? DbFunctions.AddDays(DateTime.Now, -30))
+                                    && u.Date > (From ?? DateTime.MinValue/*DbFunctions.AddDays(DateTime.Now, -30)*/)
                                     && u.Date < (To ?? DateTime.Now)
                                 group u by u.ButtonId into clickGroup
                                 let count = clickGroup.Count()
